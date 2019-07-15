@@ -1,16 +1,17 @@
 var express = require('express');
 var http = require('http');
 let searchItem
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var Twit = require('twit');
 var favicon = require('serve-favicon');
-var port = 3000;
 var watchList = ['coding', '#coding'];
 //listen the server
 app.use(express.urlencoded())
-server.listen(port, function () {
+app.listen(port, host, function () {
     console.log(`server is listening in port ${port}`)
 })
 
