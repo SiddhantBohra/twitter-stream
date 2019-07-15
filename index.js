@@ -16,7 +16,6 @@ const T = new Twit({
     access_token_secret: 'D8dGZwLFGzgLK2YN4Lm2uMlj6FcmXDCSfa3QPBi9qF9xp'
 })
 
-//listen the server
 app.use(express.urlencoded())
 server.listen(port, host, function () {
     console.log(`server is listening in port ${port}`)
