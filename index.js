@@ -8,7 +8,6 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var Twit = require('twit');
 var favicon = require('serve-favicon');
-var watchList = ['coding', '#coding'];
 
 const T = new Twit({
     consumer_key: 'SV7QoHPW0dtfjw6TCI885yf31',
@@ -19,7 +18,7 @@ const T = new Twit({
 
 //listen the server
 app.use(express.urlencoded())
-server.listen(port, function () {
+server.listen(port, host, function () {
     console.log(`server is listening in port ${port}`)
 })
 
@@ -28,19 +27,22 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html')
 })
 app.post('/submit-form', (req, res) => {
-    watchList.length = 0
+    watchList = []
     watchList.push(req.body.term)
     watchList.push("#" + req.body.term)
+    console.log(watchList)
     var stream = T.stream('statuses/filter', { track: watchList });
-    stream.on('tweet', function (data) {
-        io.sockets.emit('stream',
-            data.created_at + "\n" + data.text)
+    stream.stop().then(() => {
+        stream.on('tweet', function (data) {
+            io.sockets.emit('stream',
+                data.created_at + "\n" + data.text)
+        })
     })
-    res.sendFile(__dirname + '/index.html')
 
+    res.sendFile(__dirname + '/index.html')
 })
 
-var stream = T.stream('statuses/filter', { track: watchList });
+var stream = T.stream('statuses/filter', { track: "javascript" });
 stream.on('tweet', function (data) {
     io.sockets.emit('stream',
         data.created_at + "\n" + data.text)
