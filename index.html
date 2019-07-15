@@ -42,7 +42,7 @@
     <script type="text/javascript" src="http://myapp.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
     <script>
-        var socket = io.connect('http://localhost:3000' || "https://twitter-stream-basic.herokuapp.com/");
+        var socket = io.connect("https://twitter-stream-basic.herokuapp.com/");
         socket.on('stream', function (tweet) {
             $('#result').append('<div class="tweet">' + tweet + '</div>')
         })
