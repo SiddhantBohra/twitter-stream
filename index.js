@@ -26,11 +26,15 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html')
 })
 app.post('/submit-form', (req, res) => {
+    io.sockets.on('disconnect',(socket) =>{
+        socket.disconnect(true)
+    })
     watchList = []
     watchList.push(req.body.term)
     watchList.push("#" + req.body.term)
     console.log(watchList)
         var stream = T.stream('statuses/filter', { track: watchList });
+        stream.stop()
         stream.on('tweet', function (data) {
             io.sockets.emit('stream',
                 data.created_at + "\n" + data.text)
